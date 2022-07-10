@@ -24,12 +24,15 @@ export async function main(ns) {
 					while (growth_perc > 0.25) {
 						ns.tprint('Growing');
 						await ns.grow(target);
+						let growth_perc2 = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)));
+						ns.tprint('New room for growth is' + growth_perc2);
 					};
-					let sec = ns.getServerSecurityLevel(target) - ns.getServerSecurityLevel(target);
+					let sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
 					ns.tprint("security difference is " + sec);
 					while (sec > 0) {
 						ns.tprint('weakening')
 						await ns.weaken(target);
+						sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
 					};
 					ns.tprint('hacking')
 					await ns.nuke(target);
