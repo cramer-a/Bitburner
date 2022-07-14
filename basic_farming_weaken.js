@@ -21,9 +21,9 @@ export async function main(ns) {
 					ns.tprint('security difference is ' + sec);
 					while (sec > 0) {
 						ns.tprint('weaken')
-						let threading = ((ns.getServerMaxRam(target)-ns.getServerUsedRam(target))/ ns.getScriptRam('weakening.js'));
-						ns.run('weakening.js', threading, target);
-    					while (ns.isRunning('weakening.js')) await ns.sleep(500);
+						let threading = Math.floor((ns.getServerMaxRam('home')-ns.getServerUsedRam('home'))/ ns.getScriptRam('weakening.js'));
+						let pid = ns.run('weakening.js', threading, target);
+    					while (ns.isRunning(pid)) await ns.sleep(500);
 						sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
 					};
 					var growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)));
@@ -31,8 +31,8 @@ export async function main(ns) {
 					while (growth_perc > 0.25) {
 						ns.tprint('Growing');
 						let threading = ((ns.getServerMaxRam(target)-ns.getServerUsedRam(target))/ ns.getScriptRam('growing.js'));
-						ns.run('growing.js', threading, target);
-    					while (ns.isRunning('growing.js')) await ns.sleep(500);
+						let pid = ns.run('growing.js', threading, target);
+    					while (ns.isRunning(pid)) await ns.sleep(500);
 						growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)))
 					};
 					sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
@@ -40,8 +40,8 @@ export async function main(ns) {
 					while (sec > 0) {
 						ns.tprint('weaken')
 						let threading = ((ns.getServerMaxRam(target)-ns.getServerUsedRam(target))/ ns.getScriptRam('weakening.js'));
-						ns.run('weakening.js', threading, target);
-    					while (ns.isRunning('weakening.js')) await ns.sleep(500);
+						let pid = ns.run('weakening.js', threading, target);
+    					while (ns.isRunning(pid)) await ns.sleep(500);
 						sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
 					};
 					ns.tprint('hacking ' + target);
@@ -53,4 +53,4 @@ export async function main(ns) {
 			} else {ns.tprint('Too many ports needed')};
 		};
 	};
-};
+}
