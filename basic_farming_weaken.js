@@ -30,7 +30,7 @@ export async function main(ns) {
 					ns.tprint('room for growth is ' + growth_perc);
 					while (growth_perc > 0.25) {
 						ns.tprint('Growing');
-						let threading = ((ns.getServerMaxRam(target)-ns.getServerUsedRam(target))/ ns.getScriptRam('growing.js'));
+						let threading = ((ns.getServerMaxRam('home')-ns.getServerUsedRam('home'))/ ns.getScriptRam('growing.js'));
 						let pid = ns.run('growing.js', threading, target);
     					while (ns.isRunning(pid)) await ns.sleep(500);
 						growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)))
@@ -39,16 +39,19 @@ export async function main(ns) {
 					ns.tprint('security difference is ' + sec);
 					while (sec > 0) {
 						ns.tprint('weaken')
-						let threading = ((ns.getServerMaxRam(target)-ns.getServerUsedRam(target))/ ns.getScriptRam('weakening.js'));
+						let threading = ((ns.getServerMaxRam('home')-ns.getServerUsedRam('home'))/ ns.getScriptRam('weakening.js'));
 						let pid = ns.run('weakening.js', threading, target);
     					while (ns.isRunning(pid)) await ns.sleep(500);
 						sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
 					};
 					ns.tprint('hacking ' + target);
 					//await ns.nuke(target);
-					let threading = ((ns.getServerMaxRam(target)-ns.getServerUsedRam(target))/ ns.getScriptRam('hacking.js'));
-					let earned = await ns.run('hacking.js', threading, target);
-					ns.tprint('Cashed out ' + earned);
+					let threading = ((ns.getServerMaxRam('home')-ns.getServerUsedRam('home'))/ ns.getScriptRam('hacking.js'));
+					let available = ns.getServerMoneyAvailable(target);
+					let pid = ns.run('hacking.js', threading, target);
+					while (ns.isRunning(pid)) await ns.sleep(500);
+					let newavail = ns.getServerMoneyAvailable(target);
+					ns.tprint('Cashed out ' + (available - newavail) + ' out of ' + available + ' available');
 				};
 			} else {ns.tprint('Too many ports needed')};
 		};
