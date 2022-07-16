@@ -28,12 +28,15 @@ export async function main(ns) {
 					};
 					var growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)));
 					ns.tprint('room for growth is ' + growth_perc);
-					while (growth_perc > 0.25) {
-						ns.tprint('Growing');
-						let threading = ((ns.getServerMaxRam('home')-ns.getServerUsedRam('home'))/ ns.getScriptRam('growing.js'));
-						let pid = ns.run('growing.js', threading, target);
-    					while (ns.isRunning(pid)) await ns.sleep(500);
-						growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)))
+					if (growth_perc > 0.25) {
+						for (let j = 0; j < 10; j++) {
+							ns.tprint('Growing');
+							let threading = ((ns.getServerMaxRam('home')-ns.getServerUsedRam('home'))/ ns.getScriptRam('growing.js'));
+							let pid = ns.run('growing.js', threading, target);
+    						while (ns.isRunning(pid)) await ns.sleep(500);
+							growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)));
+							ns.tprint('- Round ' + j + '/' + (10-j) + ' - Room for growth now ' + growth_perc + ' -');
+						};
 					};
 					sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
 					ns.tprint('security difference is ' + sec);
