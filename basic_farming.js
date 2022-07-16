@@ -31,8 +31,8 @@ export async function main(ns) {
 					while (growth_perc > 0.25) {
 						ns.tprint('Growing');
 						await ns.grow(target);
-						let growth_perc2 = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)));
-						ns.tprint('New room for growth is' + growth_perc2);
+						growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)));
+						ns.tprint('New room for growth is' + growth_perc);
 					};
 					sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
 					ns.tprint("security difference is " + sec);
