@@ -18,6 +18,13 @@ export async function main(ns) {
 						await ns.nuke(target);
 						ns.tprint('Nuked');
 					};
+					let sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
+					ns.tprint("security difference is " + sec);
+					while (sec > 0) {
+						ns.tprint('weakening')
+						await ns.weaken(target);
+						sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
+					};
 					let growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)));
 					ns.tprint(ns.getServerMoneyAvailable(target) / ns.getServerMaxMoney(target));
 					ns.tprint('room for growth is ' + growth_perc);
@@ -27,7 +34,7 @@ export async function main(ns) {
 						growth_perc = (1-(ns.getServerMoneyAvailable(target)/ns.getServerMaxMoney(target)));
 						ns.tprint('New room for growth is' + growth_perc);
 					};
-					let sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
+					sec = ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target);
 					ns.tprint("security difference is " + sec);
 					while (sec > 0) {
 						ns.tprint('weakening')
